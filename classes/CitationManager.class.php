@@ -30,7 +30,7 @@ class CitationManager {
 		public function getAllCitation(){
             $listeCitation = array();
 
-            $sql = 'SELECT c.cit_num, CONCAT_WS(\' \',per_prenom,per_nom) as nom_enseignant, cit_libelle as libelle, cit_date ,AVG(vot_valeur) as moyenne from personne p JOIN citation c ON p.per_num=c.per_num JOIN vote v on v.cit_num = c.cit_num WHERE cit_valide = 1 and cit_date_valide is not null GROUP by c.cit_num';
+            $sql = 'SELECT c.cit_num, CONCAT_WS(\' \',per_prenom,per_nom) as nom_enseignant, cit_libelle as libelle, cit_date ,ifnull(AVG(vot_valeur), 0) as moyenne from personne p JOIN citation c ON p.per_num=c.per_num  LEFT JOIN vote v on v.cit_num = c.cit_num WHERE cit_valide = 1 and cit_date_valide is not null GROUP by c.cit_num';
 
             $requete = $this->db->prepare($sql);
             $requete->execute();
@@ -40,7 +40,21 @@ class CitationManager {
 
             $requete->closeCursor();
             return $listeCitation;
-					}
+			}
+			public function getCitationNonValide(){
+							$listeCitation = array();
+
+							$sql = 'SELECT c.cit_num, CONCAT_WS(\' \',per_prenom,per_nom) as nom_enseignant, cit_libelle as libelle, cit_date  from personne p JOIN citation c ON p.per_num=c.per_num  WHERE cit_valide = 0 and cit_date_valide is null GROUP by c.cit_num';
+
+							$requete = $this->db->prepare($sql);
+							$requete->execute();
+
+							while ($citation = $requete->fetch(PDO::FETCH_OBJ))
+									$listeCitation[] = new Citation($citation);
+
+									$requete->closeCursor();
+									return $listeCitation;
+				}
 		public function getCitations($nom,$date){
 			$listeCitation = array();
 
@@ -59,15 +73,13 @@ class CitationManager {
 			$requete->closeCursor();
 			return $listeCitation;
 		}
-		public function getCitationsNotes($nom, $date, $note){
+		public function getCitation($pernum){
 			$listeCitation = array();
 
-			$sql = 'SELECT cit_num, nom_enseignant, libelle, cit_date, moyenne FROM
-							(SELECT c.cit_num, CONCAT_WS(\' \',per_prenom,per_nom) as nom_enseignant, cit_libelle as libelle, cit_date ,AVG(vot_valeur) as moyenne from personne p JOIN citation c ON p.per_num=c.per_num JOIN vote v on v.cit_num = c.cit_num
-							WHERE cit_valide = 1 and cit_date_valide is not null
-							GROUP by c.cit_num)h
-							WHERE moyenne = '.$note.' and cit_date LIKE \''.$date.'\' and nom_enseignant LIKE \''.$nom.'\'';
-		
+			$sql = 'SELECT c.cit_num, CONCAT_WS(\' \',per_prenom,per_nom) as nom_enseignant, cit_libelle as libelle, cit_date  from personne p JOIN citation c ON p.per_num=c.per_num
+			WHERE cit_valide = 0 and cit_date_valide is null and cit_num = '.$pernum.'
+			GROUP by c.cit_num';
+
 			$requete = $this->db->prepare($sql);
 			$requete->execute();
 
@@ -76,6 +88,58 @@ class CitationManager {
 
 			$requete->closeCursor();
 			return $listeCitation;
+		}
+		public function getCitationsNotes($nom, $date, $note){
+			$listeCitation = array();
+
+			$sql = 'SELECT cit_num, nom_enseignant, libelle, cit_date, moyenne FROM
+							(SELECT c.cit_num, CONCAT_WS(\' \',per_prenom,per_nom) as nom_enseignant, cit_libelle as libelle, cit_date ,AVG(vot_valeur) as moyenne from personne p JOIN citation c ON p.per_num=c.per_num JOIN vote v on v.cit_num = c.cit_num
+							WHERE cit_valide = 1 and cit_date_valide is not null
+							GROUP by c.cit_num)h
+							WHERE moyenne = '.$note.' and cit_date LIKE \''.$date.'\' and nom_enseignant LIKE \''.$nom.'\'';
+
+			$requete = $this->db->prepare($sql);
+			$requete->execute();
+
+			while ($citation = $requete->fetch(PDO::FETCH_OBJ))
+				$listeCitation[] = new Citation($citation);
+
+			$requete->closeCursor();
+			return $listeCitation;
+		}
+		public function valider($citnum, $date){
+				$requete = $this->db->prepare(
+				'UPDATE citation
+				SET
+					cit_valide = 1,
+					cit_date_valide = \''.$date.'\'
+				WHERE
+					cit_num = '.$citnum.';');
+
+				$retour=$requete->execute();
+						echo "<pre>";
+						print_r($requete->debugDumpParams());
+						echo "/<pre>";
+
+				return $this->db->lastInsertId();
+		}
+		public function supprimer($citnum){
+				$requete = $this->db->prepare(
+				'DELETE FROM citation WHERE cit_num = '.$citnum.';');
+				$retour=$requete->execute();
+				echo "<pre>";
+				print_r($requete->debugDumpParams());
+				echo "/<pre>";
+				return $retour;
+		}
+		public function supprimerCitationParPersonne($pernum){
+				$requete = $this->db->prepare(
+				'DELETE FROM citation WHERE per_num = '.$pernum.';');
+				$retour=$requete->execute();
+				echo "<pre>";
+				print_r($requete->debugDumpParams());
+				echo "/<pre>";
+				return $retour;
 		}
 }
 

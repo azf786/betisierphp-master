@@ -8,7 +8,7 @@ $personnes = $perManager->getPersonne($_GET["pernum"]);
 	 	foreach ($personnes as $personne) {
 	 		$per = $personne;
 	 	}
-		echo sha1(sha1($per->getPwdPers()."48@!alsd"));
+		echo $per->getAdminPers();
 	 ?>
 	    <form class="" action="#" method="post">
 	      <label for="nom">Nom: </label>
@@ -28,8 +28,8 @@ $personnes = $perManager->getPersonne($_GET["pernum"]);
 				<?php
 				if ($per->getAdminPers() == 1) {
 					?>
-					<input type="radio" name="categorie" value="Etudiant" >Etudiant
-					<input type="radio" name="categorie" value="Personnel" checked="checked">Personnel <br>
+					<input type="radio" name="categorie" value= 0 >Etudiant
+					<input type="radio" name="categorie" value= 1 checked="checked">Personnel <br>
 					<?php
 				}else {
 					?>
@@ -58,8 +58,26 @@ $personnes = $perManager->getPersonne($_GET["pernum"]);
 	      header("Location: index.php?page=20&num=".$_GET["pernum"]);
 	    }
 
-	    if($_POST["categorie"] == "Personnel"){
-	      header("Location: index.php?page=16&num=".$_GET["pernum"]);
+	    if($_POST["categorie"] == 1){
+	      header("Location: index.php?page=21&num=".$_GET["pernum"]);
+	    }
+		}else {
+			$personne = new Personne(array('per_num'=>$_GET["pernum"],
+																		'per_nom'=>$_POST["nom"],
+	                                  'per_prenom'=>$_POST["prenom"],
+	                                  'per_tel'=>$_POST["tel"],
+	                                  'per_mail'=>$_POST["email"],
+	                                  'per_admin'=>$_POST["categorie"],
+	                                  'per_login'=>$_POST["login"],));
+			print_r($personne);
+	    $perManager->updatePersonneSansPwd($personne);
+
+			if($_POST["categorie"] == 0){
+	      header("Location: index.php?page=20&num=".$_GET["pernum"]);
+	    }
+
+	    if($_POST["categorie"] == 1){
+	      header("Location: index.php?page=21&num=".$_GET["pernum"]);
 	    }
 		}
 	}

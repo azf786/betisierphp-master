@@ -35,7 +35,15 @@ class VoteManager {
       $requete->closeCursor();
       return $listeVote;
 	  }
-
+		public function supprimer($citnum){
+				$requete = $this->db->prepare(
+				'DELETE FROM vote WHERE cit_num = '.$citnum.';');
+				$retour=$requete->execute();
+				echo "<pre>";
+				print_r($requete->debugDumpParams());
+				echo "/<pre>";
+				return $retour;
+		}
 }
 
 ?>

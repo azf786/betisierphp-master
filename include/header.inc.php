@@ -5,6 +5,7 @@
   <?php
 		$title = "Bienvenue sur le site du bétisier de l'IUT.";?>
 		<title>
+      <img src="image/smile.jpg" alt="">
 		<?php echo $title ?>
 		</title>
 		<link rel="stylesheet" type="text/css" href="css/stylesheet.css" />

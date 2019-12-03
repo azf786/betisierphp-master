@@ -25,31 +25,33 @@ case 1:
 
 case 2:
 	// inclure ici la page liste des personnes
-	if (!empty($_SESSION["connect"])) {
 		include_once('pages/listerPersonnes.inc.php');
-	}else {
-		include_once('pages/accueil.inc.php');
-	}
     break;
 case 3:
 	// inclure ici la page modification des personnes
-	if (!empty($_SESSION["connect"])) {
+	if (!empty($_SESSION["connect"]) && $_SESSION["admin"] == 1) {
 		include("pages/ModifierPersonne.inc.php");
 	}else {
 		include_once('pages/accueil.inc.php');
 	}
     break;
 case 4:
-	// inclure ici la page suppression personnes
-	include_once('pages/supprimerPersonne.inc.php');
-    break;
+	if (!empty($_SESSION["connect"]) && $_SESSION["admin"] == 1) {
+		include_once('pages/supprimerPersonne.inc.php');
+	}else {
+		include_once('pages/accueil.inc.php');
+	}
+  break;
 //
 // Citations
 //
 case 5:
-	// inclure ici la page ajouter citations
-    include("pages/ajouterCitation.inc.php");
-    break;
+	if (!empty($_SESSION["connect"]) && $_SESSION["admin"] == 0) {
+		include("pages/ajouterCitation.inc.php");
+	}else {
+		include_once('pages/accueil.inc.php');
+	}
+  break;
 
 case 6:
 	// inclure ici la page liste des citations
@@ -84,8 +86,12 @@ case 10:
     break;
 
 case 11:
-	// inclure ici la page...
-    break;
+	if (!empty($_SESSION["connect"]) && $_SESSION["admin"] == 1) {
+		include("pages/validerCitation.inc.php");
+	}else {
+		include_once('pages/accueil.inc.php');
+	}
+  break;
 
 case 12:
 		include_once('pages/accueil1.inc.php');
@@ -97,22 +103,83 @@ case 13:
 		include("pages/connexion1.inc.php");
 		break;
 	case 15:
-		include("pages/ajouterEtudiant.inc.php");
+		if (!empty($_SESSION["connect"])) {
+			include("pages/ajouterEtudiant.inc.php");
+		}else {
+			include_once('pages/accueil.inc.php');
+		}
 		break;
 	case 16:
-		include("pages/ajouterSalarie.inc.php");
+		if (!empty($_SESSION["connect"])) {
+			include("pages/ajouterSalarie.inc.php");
+		}else {
+			include_once('pages/accueil.inc.php');
+		}
 		break;
 	case 17:
-		include("pages/ajouterVote.inc.php");
+		if (!empty($_SESSION["connect"]) && $_SESSION["admin"] == 0) {
+			include("pages/ajouterVote.inc.php");
+		}else {
+			include_once('pages/accueil.inc.php');
+		}
 		break;
 	case 18:
-		include("pages/rechercherCitation.inc.php");
+		if (!empty($_SESSION["connect"])) {
+			include("pages/rechercherCitation.inc.php");
+		}else {
+			include_once('pages/accueil.inc.php');
+		}
 		break;
 	case 19:
-		include("pages/modifierPersonne.inc.php");
+		if (!empty($_SESSION["connect"]) && $_SESSION["admin"] == 1) {
+			include("pages/modifierPersonne.inc.php");
+		}else {
+			include_once('pages/accueil.inc.php');
+		}
 		break;
 	case 20:
-		include("pages/modifierEtudiant.inc.php");
+		if (!empty($_SESSION["connect"]) && $_SESSION["admin"] == 1) {
+			include("pages/modifierEtudiant.inc.php");
+		}else {
+			include_once('pages/accueil.inc.php');
+		}
+
+		break;
+	case 21:
+		if (!empty($_SESSION["connect"]) && $_SESSION["admin"] == 1) {
+			include("pages/modifierSalarie.inc.php");
+		}else {
+			include_once('pages/accueil.inc.php');
+		}
+
+		break;
+	case 22:
+		if (!empty($_SESSION["connect"]) && $_SESSION["admin"] == 1) {
+			include("pages/validerCitation1.inc.php");
+		}else {
+			include_once('pages/accueil.inc.php');
+		}
+		break;
+	case 23:
+		if (!empty($_SESSION["connect"]) && $_SESSION["admin"] == 1) {
+			include("pages/supprimerCitation.inc.php");
+		}else {
+			include_once('pages/accueil.inc.php');
+		}
+		break;
+	case 24:
+		if (!empty($_SESSION["connect"]) && $_SESSION["admin"] == 1) {
+			include("pages/supprimerPersonne1.inc.php");
+		}else {
+			include_once('pages/accueil.inc.php');
+		}
+		break;
+	case 25:
+		if (!empty($_SESSION["connect"]) && $_SESSION["admin"] == 1) {
+			include("pages/supprimerCitation1.inc.php");
+		}else {
+			include_once('pages/accueil.inc.php');
+		}
 		break;
 default : 	include_once('pages/accueil.inc.php');
 }

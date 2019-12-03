@@ -21,6 +21,16 @@ class EtudiantManager {
 						echo "/<pre>";
 						return $retour;
 		}
+		public function supprimer($per_num){
+				$requete = $this->db->prepare(
+				'DELETE FROM etudiant WHERE per_num = '.$per_num.';');
+				$retour=$requete->execute();
+				echo "<pre>";
+				print_r($requete->debugDumpParams());
+				echo "/<pre>";
+				return $retour;
+		}
+
 
 		public function getDetailEtudiant($per_num){
       $listeEtudiant = array();

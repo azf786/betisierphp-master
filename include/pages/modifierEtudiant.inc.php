@@ -5,6 +5,7 @@ $divisions=$divManager->getAllDivision();
 $depManager = new DepartementManager($pdo);
 $departements=$depManager->getAllDepartement();
 $etuManager = new EtudiantManager($pdo);
+$salManager = new SalarieManager($pdo);
 $etudiants = $etuManager->getDetailEtudiant($_GET["num"]);
 ?>
 <div class="sstitre"><h2>Ajouter un étudiant</h2></div>
@@ -47,3 +48,13 @@ foreach ($etudiants as $etudiant) {
       <br>
       <button type="submit" name="button">Valider</button>
     </form>
+    <?php
+    	if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $etudiant = new Etudiant(array('per_num'=>$_GET["num"],
+                                      'dep_num'=>$_POST["dep"],
+                                      'div_num'=>$_POST["div"],));
+        $etuManager->supprimer($_GET["num"]);
+        $salManager->supprimer($_GET["num"]);
+    		$etuManager->add($etudiant);
+    	}
+     ?>

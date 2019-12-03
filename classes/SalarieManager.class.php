@@ -22,10 +22,20 @@ class SalarieManager {
 						return $retour;
 		}
 
+		public function supprimer($per_num){
+				$requete = $this->db->prepare(
+				'DELETE FROM salarie WHERE per_num = '.$per_num.';');
+				$retour=$requete->execute();
+				echo "<pre>";
+				print_r($requete->debugDumpParams());
+				echo "/<pre>";
+				return $retour;
+		}
+
 		public function getDetailSalarie($per_num){
       $listeSalarie = array();
 
-      $sql = 'SELECT per_prenom, per_mail, per_tel, sal_telprof, fon_libelle FROM personne p JOIN salarie s ON s.per_num=p.per_num JOIN fonction f ON f.fon_num=s.fon_num WHERE p.per_num='.$per_num;
+      $sql = 'SELECT per_prenom, per_mail, per_tel, sal_telprof, fon_libelle, f.fon_num FROM personne p JOIN salarie s ON s.per_num=p.per_num JOIN fonction f ON f.fon_num=s.fon_num WHERE p.per_num='.$per_num;
       $requete = $this->db->prepare($sql);
       $requete->execute();
 
