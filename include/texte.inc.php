@@ -181,6 +181,20 @@ case 13:
 			include_once('pages/accueil.inc.php');
 		}
 		break;
+	case 26:
+		if (!empty($_SESSION["connect"]) && $_SESSION["admin"] == 1) {
+			include("pages/supprimerVille.inc.php");
+		}else {
+			include_once('pages/accueil.inc.php');
+		}
+		break;
+	case 27:
+		if (!empty($_SESSION["connect"]) && $_SESSION["admin"] == 1) {
+			include("pages/supprimerVille1.inc.php");
+		}else {
+			include_once('pages/accueil.inc.php');
+		}
+			break;
 default : 	include_once('pages/accueil.inc.php');
 }
 

@@ -7,7 +7,7 @@ $motManager = new MotManager($pdo);
 ?>
 <div class="sstitre"><h2>Ajouter une citation</h2></div>
 <?php
-  if (empty($_POST["cit"])) {
+  if (empty($_POST["prof"]) || empty($_POST["date"]) || empty($_POST["cit"])) {
     ?>
     <form class="" action="#" method="post">
       <label for="prof">Enseignant</label>
@@ -30,16 +30,12 @@ $motManager = new MotManager($pdo);
       <button type="submit" name="button">Valider</button>
     </form>
     <?php
-  }
-
-  if (!empty($_POST["cit"])) {
+  }else {
     $motInterdits = $motManager->getAllMotInterdit($_POST["cit"]);
-    echo $_POST["date"];
     $res = $_POST["cit"];
     if(count($motInterdits) != 0){
       foreach ($motInterdits as $motInterdit) {
-        echo "1";
-        $res = str_replace($motInterdit->getMotInterdit(), '---', $res);
+        $res = str_ireplace($motInterdit->getMotInterdit(), '---', $res);
       }
       ?>
       <form class="" action="#" method="post">
@@ -76,7 +72,6 @@ $motManager = new MotManager($pdo);
       $date = new DateTime();
       date_default_timezone_set('Europe/Paris');
       $t=time();
-      echo($t . "<br>");
       $now = date("Y-m-d H:i:s",$t);
       $citation = new Citation(array('per_num'=>$_POST["prof"],
                                     'per_num_etu'=>$_SESSION["pernum"],
@@ -84,6 +79,9 @@ $motManager = new MotManager($pdo);
                                     'cit_date'=>$_POST["date"],
                                     'cit_date_depo'=>$now,));
       $citManager->add($citation);
+      ?>
+        <p><img src="image\valid.png" alt="tick" > La citation à été ajouté</p>
+      <?php
     }
 
 

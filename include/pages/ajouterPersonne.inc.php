@@ -1,10 +1,9 @@
 <?php
 $pdo=new Mypdo();
-$perManager = new PersonneManager($pdo);
 ?>
 <div class="sstitre"><h2>Ajouter une personne</h2></div>
 <?php
-  if (empty($_POST["nom"])) {
+  if (empty($_POST["nom"]) || empty($_POST["prenom"]) || empty($_POST["tel"]) || empty($_POST["email"]) || empty($_POST["login"]) || empty($_POST["mdp"])) {
     ?>
     <form class="" action="#" method="post">
       <label for="nom">Nom: </label>
@@ -20,35 +19,29 @@ $perManager = new PersonneManager($pdo);
 			<label for="mdp">Mot de passe: </label>
       <input type="password" name="mdp" value=""> <br>
 			<label for="categorie">Catégorie</label>
-			<input type="radio" name="categorie" value="Etudiant">Etudiant
-			<input type="radio" name="categorie" value="Personnel">Personnel <br>
+			<input type="radio" name="categorie" value=0 checked>Etudiant
+			<input type="radio" name="categorie" value=1>Personnel <br>
       <button type="submit" name="button">Valider</button>
     </form>
     <?php
-  }
+  }else {
 
-  if (!empty($_POST["nom"])) {
-    $admin = 0;
-    if($_POST["categorie"] == "Personnel"){
-      $admin = 1;
-    }
-    echo $admin;
     $personne = new Personne(array('per_nom'=>$_POST["nom"],
                                   'per_prenom'=>$_POST["prenom"],
                                   'per_tel'=>$_POST["tel"],
                                   'per_mail'=>$_POST["email"],
-                                  'per_admin'=>$admin,
+                                  'per_admin'=>$_POST["categorie"],
                                   'per_login'=>$_POST["login"],
                                   'per_pwd'=>sha1(sha1($_POST["mdp"])."48@!alsd"),));
 
-    $num = $perManager->add($personne);
+    $_SESSION["personne"] = serialize($personne);
 
-    if($_POST["categorie"] == "Etudiant"){
-      header("Location: index.php?page=15&num=".$num);
+    if($_POST["categorie"] == 0){
+      header("Location: index.php?page=15");
     }
 
-    if($_POST["categorie"] == "Personnel"){
-      header("Location: index.php?page=16&num=".$num);
+    if($_POST["categorie"] == 1){
+      header("Location: index.php?page=16");
     }
 
   }

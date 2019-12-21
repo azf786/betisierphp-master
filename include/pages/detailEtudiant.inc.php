@@ -3,7 +3,6 @@
 $pdo=new Mypdo();
 $etuManager = new EtudiantManager($pdo);
 $etudiants=$etuManager->getDetailEtudiant($_GET["numC"]);
-echo $_SESSION["name"];
 ?>
 <div class="titre"><h2>Détail sur l'étudiant <?php echo $_GET["nomC"]; ?> </h2></div>
 

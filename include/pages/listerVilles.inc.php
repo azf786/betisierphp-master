@@ -6,7 +6,7 @@ $villes=$vilManager->getAllVille();
 ?>
 <div class="sstitre"><h2>Liste des villes</h2></div>
 
-<?php echo "<p> Actuellement ".$vilManager->getNbreVilles()." viles sont enregistrés"; ?>
+<?php echo "<p> Actuellement ".count($villes)." viles sont enregistrés"; ?>
 
 <table>
 	<tr><th>Numéro</th><th>Nom</th></tr>

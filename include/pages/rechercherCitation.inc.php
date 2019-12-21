@@ -28,20 +28,23 @@ $etudiant = $perManager->estEtudiant($_SESSION["pernum"]);
 </form>
 <?php
   if(empty($_POST["nom"]) && empty($_POST["date"]) && empty($_POST["note"])) {
-    $citations=$citManager->getAllCitation();
+    $citations=$citManager->getAllCitationValide();
     ?>
     <br />
     <br />
     <br />
     <table>
     	<tr><th>Nom</th><th>Libelle</th><th>Date</th><th>Moyenne des notes</th></tr>
+
     	<?php
     	foreach ($citations as $citation){?>
+      <tr>
     			<td><?php echo $citation->getNomEnseignant();?></td>
     			<td><?php echo $citation->getLibelle();?></td>
     			<?php $date = new DateTime($citation->getCitDate()); ?>
     			<td><?php echo $date->format('d/m/Y');?></td>
     			<td><?php echo $citation->getMoyenne();?></td>
+      </tr>
     	<?php }?>
     	</table>
     <?php

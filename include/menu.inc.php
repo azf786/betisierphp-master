@@ -38,7 +38,7 @@
 				?><li><a href="index.php?page=11">Modifier</a></li><?php
 			} ?>
 			<?php if (!empty($_SESSION["connect"]) && $_SESSION["admin"] == 1) {
-				?><li><a href="index.php?page=12">Supprimer</a></li><?php
+				?><li><a href="index.php?page=26">Supprimer</a></li><?php
 			} ?>
 
 		</ul>

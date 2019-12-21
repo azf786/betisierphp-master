@@ -16,18 +16,12 @@ class EtudiantManager {
 				$requete->bindValue(':divNum',$etudiant->getDivNum());
 
 				$retour=$requete->execute();
-						echo "<pre>";
-						print_r($requete->debugDumpParams());
-						echo "/<pre>";
-						return $retour;
+				return $retour;
 		}
 		public function supprimer($per_num){
 				$requete = $this->db->prepare(
 				'DELETE FROM etudiant WHERE per_num = '.$per_num.';');
 				$retour=$requete->execute();
-				echo "<pre>";
-				print_r($requete->debugDumpParams());
-				echo "/<pre>";
 				return $retour;
 		}
 

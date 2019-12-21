@@ -13,41 +13,47 @@ class VilleManager {
             $requete->bindValue(':nom',$ville->getVilNom());
 
 						$retour=$requete->execute();
-								echo "<pre>";
-								print_r($requete->debugDumpParams());
-								echo "/<pre>";
-								return $retour;
+						return $retour;
         }
 
 		public function getAllVille(){
-            $listeVilles = array();
+      	$listeVilles = array();
 
-            $sql = 'select vil_num, vil_nom FROM ville';
+        $sql = 'select vil_num, vil_nom FROM ville';
 
-            $requete = $this->db->prepare($sql);
-            $requete->execute();
+        $requete = $this->db->prepare($sql);
+        $requete->execute();
 
-            while ($ville = $requete->fetch(PDO::FETCH_OBJ))
-                $listeVilles[] = new Ville($ville);
+        while ($ville = $requete->fetch(PDO::FETCH_OBJ))
+            $listeVilles[] = new Ville($ville);
 
-            $requete->closeCursor();
-            return $listeVilles;
-					}
-					public function getNbreVilles(){
-			            $nbreVilles = 0;
-									$db = mysqli_connect ('localhost', 'root' , '') or die("Veuillez nous excuser : erreur système");
-           				mysqli_select_db($db,'betisier') or die("Veuillez nous excuser : erreur système");
+        $requete->closeCursor();
+        return $listeVilles;
+		}
 
-			            $sql = 'select count(*) as nbre FROM ville';
+		public function getVilleSupprimable()
+		{
+			$listeVilles = array();
 
-									$resul=mysqli_query($db,$sql);
-									while($ligne=mysqli_fetch_array($resul))   {
-    										$nbreVilles=$ligne["nbre"];
-    							}
+			$sql = 'SELECT vil_num, vil_nom FROM ville WHERE vil_num NOT IN (SELECT vil_num FROM departement)';
 
+			$requete = $this->db->prepare($sql);
+			$requete->execute();
 
-			            return $nbreVilles;
-								}
+			while ($ville = $requete->fetch(PDO::FETCH_OBJ))
+					$listeVilles[] = new Ville($ville);
+
+			$requete->closeCursor();
+			return $listeVilles;
+		}
+	  public function supprimer($villenum)
+	  {
+			$requete = $this->db->prepare(
+			'DELETE FROM ville WHERE vil_num = '.$villenum.';');
+			$retour=$requete->execute();
+			return $retour;
+	  }
+
 }
 
 ?>

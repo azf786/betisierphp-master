@@ -5,6 +5,8 @@ $divisions=$divManager->getAllDivision();
 $depManager = new DepartementManager($pdo);
 $departements=$depManager->getAllDepartement();
 $etuManager = new EtudiantManager($pdo);
+$perManager = new PersonneManager($pdo);
+$personne = unserialize($_SESSION["personne"]);
 ?>
 <div class="sstitre"><h2>Ajouter un étudiant</h2></div>
 <?php
@@ -40,7 +42,9 @@ $etuManager = new EtudiantManager($pdo);
 
   if (!empty($_POST["div"])) {
 
-    $etudiant = new Etudiant(array('per_num'=>$_GET["num"],
+    $num = $perManager->add($personne);
+    unset ($_SESSION["personne"]);
+    $etudiant = new Etudiant(array('per_num'=>$num,
                                   'dep_num'=>$_POST["dep"],
                                   'div_num'=>$_POST["div"],));
     $etuManager->add($etudiant);

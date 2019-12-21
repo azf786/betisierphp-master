@@ -3,7 +3,7 @@
 <?php
 $pdo=new Mypdo();
 $citManager = new CitationManager($pdo);
-$citations=$citManager->getAllCitation();
+$citations=$citManager->getAllCitationValide();
 $votManager = new VoteManager($pdo);
 $perManager = new PersonneManager($pdo);
 $etudiant = 0;

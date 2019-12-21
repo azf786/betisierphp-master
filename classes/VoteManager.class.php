@@ -16,10 +16,7 @@ class VoteManager {
 				$requete->bindValue(':votvaleur',$vote->getVotValeur());
 
 				$retour=$requete->execute();
-						echo "<pre>";
-						print_r($requete->debugDumpParams());
-						echo "/<pre>";
-						return $retour;
+				return $retour;
 		}
 
 		public function getVoteEtudiant($per_num, $cit_num){
@@ -39,9 +36,6 @@ class VoteManager {
 				$requete = $this->db->prepare(
 				'DELETE FROM vote WHERE cit_num = '.$citnum.';');
 				$retour=$requete->execute();
-				echo "<pre>";
-				print_r($requete->debugDumpParams());
-				echo "/<pre>";
 				return $retour;
 		}
 }

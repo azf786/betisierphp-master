@@ -5,7 +5,6 @@
   <?php
 		$title = "Bienvenue sur le site du bétisier de l'IUT.";?>
 		<title>
-      <img src="image/smile.jpg" alt="">
 		<?php echo $title ?>
 		</title>
 		<link rel="stylesheet" type="text/css" href="css/stylesheet.css" />
@@ -24,13 +23,21 @@
       <?php
       if(!empty($_SESSION["connect"])){
         ?>
-        <a href="http://localhost/betisierphp-master/index.php?page=12">Utilisateur: <?php echo $_SESSION["login"]; ?> Deconnexion</a>
+        <a href="http://localhost/betisierphp-master/index.php?page=12">Utilisateur: <?php echo $_SESSION["login"]; ?>   Déconnexion</a>
         <?php
       } ?>
 
 		</div>
 		<div id="entete">
+
 			<div id="logo">
+        <?php
+          if(empty($_SESSION["connect"])){
+            ?><img src="image\lebetisier.gif" alt="lebetisier"  width="200" height="200"><?php
+          }else {
+            ?><img src="image\smile.jpg" alt="smile"  width="200" height="200"><?php
+          }
+         ?>
 
 			</div>
 			<div id="titre">

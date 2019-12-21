@@ -20,10 +20,6 @@ class PersonneManager {
 				$requete->bindValue(':pwd',$personne->getPwdPers());
 
 				$retour=$requete->execute();
-						echo "<pre>";
-						print_r($requete->debugDumpParams());
-						echo "/<pre>";
-
 				return $this->db->lastInsertId();
 		}
 		public function updatePersonneAvecPwd($personne){
@@ -41,10 +37,6 @@ class PersonneManager {
 					per_num = '.$personne->getNumPers().';');
 
 				$retour=$requete->execute();
-						echo "<pre>";
-						print_r($requete->debugDumpParams());
-						echo "/<pre>";
-
 				return $this->db->lastInsertId();
 		}
 
@@ -62,10 +54,6 @@ class PersonneManager {
 					per_num = '.$personne->getNumPers().';');
 
 				$retour=$requete->execute();
-						echo "<pre>";
-						print_r($requete->debugDumpParams());
-						echo "/<pre>";
-
 				return $this->db->lastInsertId();
 		}
 
@@ -107,9 +95,6 @@ class PersonneManager {
 			 $requete = $this->db->prepare(
 			 'DELETE FROM personne WHERE per_num = '.$pernum.';');
 			 $retour=$requete->execute();
-			 echo "<pre>";
-			 print_r($requete->debugDumpParams());
-			 echo "/<pre>";
 			 return $retour;
 	 }
 }
